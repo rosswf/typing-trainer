@@ -12,13 +12,13 @@ BG_COLOUR = pygame.Color('0x584B53')
 FONT_COLOUR = pygame.Color('0xFFBA0A')
 SCORE_COLOUR = pygame.Color('0xF4F7F5')
 END_SCREEN_COLOUR = pygame.Color('0x584B53')
-VELOCITY = 180 # SHOULD BE MULTIPLE OF FPS
+VELOCITY = 180  # SHOULD BE MULTIPLE OF FPS
 FPS = 60
 WORDS_PER_SECOND = 0.5
 WORD_FILE = 'words.txt'
 MIN_WORD_LENGTH = 4
 MAX_WORD_LENGTH = 10
-MAX_WORDS = 50
+MAX_WORDS = 5
 
 # Game setup
 pygame.init()
@@ -33,9 +33,6 @@ game_font = pygame.font.SysFont(FONT, FONT_SIZE)
 score_font = pygame.font.SysFont(FONT, FONT_SIZE // 2)
 end_screen_font = pygame.font.SysFont(FONT, FONT_SIZE)
 title_font = pygame.font.SysFont(FONT, int(FONT_SIZE * 1.5))
-
-success_sound = pygame.mixer.Sound('assets/success.wav')
-mistake_sound = pygame.mixer.Sound('assets/mistake.wav')
 
 # Word class
 class Word:
@@ -85,7 +82,6 @@ def move_word_and_delete(game_words):
     for word in list(game_words):
         word.update_y_pos()
         if word.y_pos + word.size[1] >= HEIGHT:
-            pygame.mixer.Sound.play(mistake_sound)
             game_words.remove(word)
             missed_words += 1
         else:
@@ -108,11 +104,9 @@ def check_letter_of_word(letter, game_words):
         if letter == word.word[0].lower():
             word.update_word()
             if word.word == " ":
-                pygame.mixer.Sound.play(success_sound)
                 game_words.remove(word)
             break
     else:
-        pygame.mixer.Sound.play(mistake_sound)
         return 1
     return 0
 
@@ -150,10 +144,10 @@ def write_ending_score(mistakes, missed, total_chars):
 
 def write_title_screen():
 
-    title_font_size = title_font.size(f'TYPING TRAINER')
+    title_font_size = title_font.size('TYPING TRAINER')
     instruction_font_size = score_font.size("Press 'ENTER' to play or 'ESC' to quit")
 
-    title_text_surface = title_font.render(f'TYPING TRAINER', True, FONT_COLOUR)
+    title_text_surface = title_font.render('TYPING TRAINER', True, FONT_COLOUR)
     instruction_text_surface = score_font.render("Press 'ENTER' to play or 'ESC' to quit", True, FONT_COLOUR)
 
     game_window.blit(title_text_surface, ((WIDTH // 2) - (title_font_size[0] // 2), 50))
