@@ -144,7 +144,7 @@ def game():
         # Event checking
         for event in pygame.event.get():
             if event.type == QUIT:
-                playing = False
+                sys.exit()
             elif event.type == KEYDOWN:
                 try:
                     mistakes += check_letter_of_word(chr(event.key), game_words)
