@@ -123,7 +123,7 @@ def write_score_info(remaining, missed, mistakes):
     game_window.blit(remaining_text_surface, (5, 5))
     missing_text_surface = score_font.render(f'Missed: {missed}', True, SCORE_COLOUR)
     game_window.blit(missing_text_surface, (5, HEIGHT - score_font_size * 2))
-    mistakes_text_surface = score_font.render(f'Mistakes {mistakes}', True, SCORE_COLOUR)
+    mistakes_text_surface = score_font.render(f'Mistakes: {mistakes}', True, SCORE_COLOUR)
     game_window.blit(mistakes_text_surface, (5, HEIGHT -  score_font_size))
 
 def write_ending_score(mistakes, missed, total_chars):
