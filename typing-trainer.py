@@ -3,7 +3,7 @@ import sys
 import pygame
 from pygame.locals import *
 
-# Constants
+# Game Options
 WIDTH = 1024
 HEIGHT = 768
 FONT = 'carlito'
@@ -18,7 +18,9 @@ WORDS_PER_SECOND = 0.5
 WORD_FILE = 'words.txt'
 MIN_WORD_LENGTH = 4
 MAX_WORD_LENGTH = 10
-MAX_WORDS = 5
+MAX_WORDS = 50
+SOUND = True    # Will be set to False if issues opening audio files
+VOLUME = 0.5    # Value between 0.0 and 1.0
 
 # Game setup
 pygame.init()
@@ -33,6 +35,16 @@ game_font = pygame.font.SysFont(FONT, FONT_SIZE)
 score_font = pygame.font.SysFont(FONT, FONT_SIZE // 2)
 end_screen_font = pygame.font.SysFont(FONT, FONT_SIZE)
 title_font = pygame.font.SysFont(FONT, int(FONT_SIZE * 1.5))
+
+try:
+    success_sound = pygame.mixer.Sound('assets/success.ogg')
+    mistake_sound = pygame.mixer.Sound('assets/mistake.ogg')
+    missed_sound = pygame.mixer.Sound('assets/missed.ogg')
+    success_sound.set_volume(VOLUME)
+    mistake_sound.set_volume(VOLUME)
+    missed_sound.set_volume(VOLUME)
+except:
+    SOUND = False
 
 # Word class
 class Word:
@@ -82,6 +94,8 @@ def move_word_and_delete(game_words):
     for word in list(game_words):
         word.update_y_pos()
         if word.y_pos + word.size[1] >= HEIGHT:
+            if SOUND:
+                missed_sound.play()
             game_words.remove(word)
             missed_words += 1
         else:
@@ -104,9 +118,13 @@ def check_letter_of_word(letter, game_words):
         if letter == word.word[0].lower():
             word.update_word()
             if word.word == " ":
+                if SOUND:
+                    success_sound.play()
                 game_words.remove(word)
             break
     else:
+        if SOUND:
+            mistake_sound.play()
         return 1
     return 0
 
