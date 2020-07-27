@@ -145,7 +145,10 @@ def game():
             if event.type == QUIT:
                 playing = False
             elif event.type == KEYDOWN:
-                mistakes += check_letter_of_word(chr(event.key), game_words)
+                try:
+                    mistakes += check_letter_of_word(chr(event.key), game_words)
+                except ValueError:
+                    pass
 
         game_window.fill(BG_COLOUR)
 
@@ -174,10 +177,13 @@ def end_screen(mistakes, missed, total_chars):
             if event.type == QUIT:
                 game_over = False
             if event.type == KEYDOWN:
-                if chr(event.key) == 'q' or event.key == K_ESCAPE:
-                    game_over = False
-                if event.key == K_RETURN:
-                    game()
+                try:
+                    if chr(event.key) == 'q' or event.key == K_ESCAPE:
+                        game_over = False
+                    elif event.key == K_RETURN:
+                        game()
+                except ValueError:
+                    pass
         write_ending_score(mistakes, missed, total_chars)
         pygame.display.update()
         FramePerSec.tick(FPS)
