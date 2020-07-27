@@ -34,6 +34,9 @@ score_font = pygame.font.SysFont(FONT, FONT_SIZE // 2)
 end_screen_font = pygame.font.SysFont(FONT, FONT_SIZE)
 title_font = pygame.font.SysFont(FONT, int(FONT_SIZE * 1.5))
 
+success_sound = pygame.mixer.Sound('assets/success.wav')
+mistake_sound = pygame.mixer.Sound('assets/mistake.wav')
+
 # Word class
 class Word:
     def __init__(self, word):
@@ -82,6 +85,7 @@ def move_word_and_delete(game_words):
     for word in list(game_words):
         word.update_y_pos()
         if word.y_pos + word.size[1] >= HEIGHT:
+            pygame.mixer.Sound.play(mistake_sound)
             game_words.remove(word)
             missed_words += 1
         else:
@@ -104,9 +108,11 @@ def check_letter_of_word(letter, game_words):
         if letter == word.word[0].lower():
             word.update_word()
             if word.word == " ":
+                pygame.mixer.Sound.play(success_sound)
                 game_words.remove(word)
             break
     else:
+        pygame.mixer.Sound.play(mistake_sound)
         return 1
     return 0
 
