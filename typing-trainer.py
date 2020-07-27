@@ -18,7 +18,7 @@ WORDS_PER_SECOND = 0.5
 WORD_FILE = 'words.txt'
 MIN_WORD_LENGTH = 4
 MAX_WORD_LENGTH = 10
-MAX_WORDS = 5
+MAX_WORDS = 50
 
 # Game setup
 pygame.init()
@@ -147,6 +147,38 @@ def write_ending_score(mistakes, missed, total_chars):
     game_window.blit(accuracy_text_surface, ((WIDTH // 2) - (accuracy_font_size[0] // 2), (HEIGHT // 2) + (2 * missed_font_size[1]) - 50))
     game_window.blit(instruction_text_surface, ((WIDTH // 2) - (instruction_font_size[0] // 2), HEIGHT - 50 - instruction_font_size[1]))
 
+
+def write_title_screen():
+
+    title_font_size = title_font.size(f'TYPING TRAINER')
+    instruction_font_size = score_font.size("Press 'ENTER' to play or 'ESC' to quit")
+
+    title_text_surface = title_font.render(f'TYPING TRAINER', True, FONT_COLOUR)
+    instruction_text_surface = score_font.render("Press 'ENTER' to play or 'ESC' to quit", True, FONT_COLOUR)
+
+    game_window.blit(title_text_surface, ((WIDTH // 2) - (title_font_size[0] // 2), 50))
+    game_window.blit(instruction_text_surface, ((WIDTH // 2) - (instruction_font_size[0] // 2), HEIGHT - 50 - instruction_font_size[1]))
+
+
+# Title Screen
+def title_screen():
+    game_over = True
+    while game_over == True:
+        game_window.fill(END_SCREEN_COLOUR)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                game_over = False
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    game_over = False
+                elif event.key == K_RETURN:
+                    game()
+        write_title_screen()
+        pygame.display.update()
+        FramePerSec.tick(FPS)
+    pygame.quit()
+    sys.exit()
+
 # Game Loop
 def game():
     playing = True
@@ -207,4 +239,4 @@ def end_screen(mistakes, missed, total_chars):
     sys.exit()
 
 if __name__ == '__main__':
-    game()
+    title_screen()
