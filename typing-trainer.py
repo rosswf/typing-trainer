@@ -22,6 +22,7 @@ MAX_WORDS = 100
 
 # Game setup
 pygame.init()
+pygame.display.set_caption('Typing Trainer')
 
 FramePerSec = pygame.time.Clock()
 
