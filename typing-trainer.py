@@ -18,7 +18,7 @@ WORDS_PER_SECOND = 0.5
 WORD_FILE = 'words.txt'
 MIN_WORD_LENGTH = 4
 MAX_WORD_LENGTH = 10
-MAX_WORDS = 100
+MAX_WORDS = 50
 
 # Game setup
 pygame.init()
@@ -123,7 +123,7 @@ def write_ending_score(mistakes, missed, total_chars):
     accuracy = (1 - (mistakes / total_chars)) * 100
     missed_font_size = end_screen_font.size(f'Words Missed: {missed}')
     accuracy_font_size = end_screen_font.size(f'Accuracy: {accuracy:.2f}%')
-    
+
     missed_text_surface = end_screen_font.render(f'Words Missed: {missed}', True, SCORE_COLOUR)
     accuracy_text_surface = end_screen_font.render(f'Accuracy: {accuracy:.2f}%', True, SCORE_COLOUR)
 
@@ -166,6 +166,7 @@ def game():
         write_score_info(remaining, missed, mistakes)
         pygame.display.update()
         FramePerSec.tick(FPS)
+    pygame.time.delay(500)
     end_screen(mistakes, missed, total_chars)
 
 # End Screen
