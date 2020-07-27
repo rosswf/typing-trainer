@@ -11,14 +11,14 @@ FONT_SIZE = 72
 BG_COLOUR = pygame.Color('0x584B53')
 FONT_COLOUR = pygame.Color('0xFFBA0A')
 SCORE_COLOUR = pygame.Color('0xF4F7F5')
-END_SCREEN_COLOUR = pygame.Color('0x3083DC')
+END_SCREEN_COLOUR = pygame.Color('0x584B53')
 VELOCITY = 180 # SHOULD BE MULTIPLE OF FPS
 FPS = 60
 WORDS_PER_SECOND = 0.5
 WORD_FILE = 'words.txt'
 MIN_WORD_LENGTH = 4
 MAX_WORD_LENGTH = 10
-MAX_WORDS = 50
+MAX_WORDS = 5
 
 # Game setup
 pygame.init()
@@ -32,6 +32,7 @@ game_window.fill(BG_COLOUR)
 game_font = pygame.font.SysFont(FONT, FONT_SIZE)
 score_font = pygame.font.SysFont(FONT, FONT_SIZE // 2)
 end_screen_font = pygame.font.SysFont(FONT, FONT_SIZE)
+title_font = pygame.font.SysFont(FONT, int(FONT_SIZE * 1.5))
 
 # Word class
 class Word:
@@ -43,7 +44,7 @@ class Word:
         self.set_surface()
 
     def get_random_x_pos(self):
-        return random.randrange(10, WIDTH - self.size[0], 50)
+        return random.randrange(10, WIDTH - self.size[0] - 10, 50)
 
     def set_surface(self):
         self.surface = game_font.render(self.word, True, FONT_COLOUR)
@@ -121,14 +122,24 @@ def write_score_info(remaining, missed, mistakes):
 
 def write_ending_score(mistakes, missed, total_chars):
     accuracy = (1 - (mistakes / total_chars)) * 100
+
+    title_font_size = title_font.size(f'Well done!')
     missed_font_size = end_screen_font.size(f'Words Missed: {missed}')
+    mistakes_font_size = end_screen_font.size(f'Mistakes: {mistakes}')
     accuracy_font_size = end_screen_font.size(f'Accuracy: {accuracy:.2f}%')
+    instruction_font_size = score_font.size("Press 'ENTER' to play again or 'ESC' to quit")
 
+    title_text_surface = title_font.render(f'Well done!', True, FONT_COLOUR)
     missed_text_surface = end_screen_font.render(f'Words Missed: {missed}', True, SCORE_COLOUR)
+    mistakes_text_surface = end_screen_font.render(f'Mistakes: {mistakes}', True, SCORE_COLOUR)
     accuracy_text_surface = end_screen_font.render(f'Accuracy: {accuracy:.2f}%', True, SCORE_COLOUR)
+    instruction_text_surface = score_font.render("Press 'ENTER' to play again or 'ESC' to quit", True, FONT_COLOUR)
 
-    game_window.blit(missed_text_surface, ((WIDTH // 2) - (missed_font_size[0] // 2), HEIGHT // 2))
-    game_window.blit(accuracy_text_surface, ((WIDTH // 2) - (accuracy_font_size[0] // 2), (HEIGHT // 2) + missed_font_size[1]))
+    game_window.blit(title_text_surface, ((WIDTH // 2) - (title_font_size[0] // 2), 50))
+    game_window.blit(missed_text_surface, ((WIDTH // 2) - (missed_font_size[0] // 2), HEIGHT // 2 - 50))
+    game_window.blit(mistakes_text_surface, ((WIDTH // 2) - (mistakes_font_size[0] // 2), (HEIGHT // 2) + (missed_font_size[1]) - 50))
+    game_window.blit(accuracy_text_surface, ((WIDTH // 2) - (accuracy_font_size[0] // 2), (HEIGHT // 2) + (2 * missed_font_size[1]) - 50))
+    game_window.blit(instruction_text_surface, ((WIDTH // 2) - (instruction_font_size[0] // 2), HEIGHT - 50 - instruction_font_size[1]))
 
 # Game Loop
 def game():
@@ -179,13 +190,10 @@ def end_screen(mistakes, missed, total_chars):
             if event.type == QUIT:
                 game_over = False
             if event.type == KEYDOWN:
-                try:
-                    if chr(event.key) == 'q' or event.key == K_ESCAPE:
-                        game_over = False
-                    elif event.key == K_RETURN:
-                        game()
-                except ValueError:
-                    pass
+                if event.key == K_ESCAPE:
+                    game_over = False
+                elif event.key == K_RETURN:
+                    game()
         write_ending_score(mistakes, missed, total_chars)
         pygame.display.update()
         FramePerSec.tick(FPS)
