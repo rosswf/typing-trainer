@@ -1,33 +1,4 @@
 import tkinter  as tk
-# window = tk.Tk()
-# window.geometry('400x400')
-# greeting = tk.Label(text="Hello, Tkinter")
-# label = tk.Label(text="Name")
-# entry = tk.Entry(window)
-# label.pack()
-# entry.pack()
-# check = tk.Button(window,text='check 3', command=window.destroy)
-# check.pack()
-# print(entry.get())
-# window.mainloop()
-WIDTH = 800
-HEIGHT = 600
-FONT = 'carlito'
-FONT_SIZE = 72
-# BG_COLOUR = pygame.Color('0x584B53')
-# FONT_COLOUR = pygame.Color('0xFFBA0A')
-# SCORE_COLOUR = pygame.Color('0xF4F7F5')
-# END_SCREEN_COLOUR = pygame.Color('0x584B53')
-VELOCITY = 180  # SHOULD BE MULTIPLE OF FPS
-FPS = 60
-WORDS_PER_SECOND = 0.5
-WORD_FILE = 'words.txt'
-MIN_WORD_LENGTH = 4
-MAX_WORD_LENGTH = 5
-MAX_WORDS = 50
-SOUND = True    # Will be set to False if issues opening audio files
-VOLUME = 0.5    # Value between 0.0 and 1.0
-KEYBOARD_LAYOUT = 0
 class App():
    def __init__(self):
         self.root = tk.Tk()
@@ -70,7 +41,7 @@ class App():
             self.entries.append(i)
             r += 1
 
-        button = tk.Button(self.root, text = 'Start The GAME', command=self.start)
+        button = tk.Button(self.root, text = 'START THE  GAME', command=self.start)
         button.pack()
         button.place(x=80,y=260)
         self.root.mainloop()
