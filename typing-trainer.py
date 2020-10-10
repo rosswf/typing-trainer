@@ -82,6 +82,7 @@ def create_word_list():
             words = f.readlines()
             for word in words:
                 word = word.strip()
+                word = word.replace(' ', u'\u00b7')
                 if len(word) >= MIN_WORD_LENGTH and len(word) <= MAX_WORD_LENGTH:
                     word_list.append(word.upper())
     except:
@@ -115,7 +116,9 @@ def add_words(cycle, game_words, num_words, total_chars, word_list):
 # Check if typed letter is at start of word and update word
 def check_letter_of_word(letter, game_words):
     for word in list(game_words):
-        if letter == word.word[0].lower():
+        first_char = word.word[0].lower()
+        first_char = " " if first_char == u"\u00b7" else first_char
+        if letter == first_char:
             word.update_word()
             if word.word == " ":
                 if SOUND:
