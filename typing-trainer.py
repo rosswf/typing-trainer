@@ -2,26 +2,27 @@ import random
 import sys
 import pygame
 from pygame.locals import *
-
+import settings 
 # Game Options
-WIDTH = 1024
-HEIGHT = 768
+Game_Options = settings.App()
+WIDTH = int(Game_Options.dfg[0])#1024
+HEIGHT = int(Game_Options.dfg[1]) #768
 FONT = 'carlito'
-FONT_SIZE = 72
+FONT_SIZE = int(Game_Options.dfg[2])#72
 BG_COLOUR = pygame.Color('0x584B53')
 FONT_COLOUR = pygame.Color('0xFFBA0A')
 SCORE_COLOUR = pygame.Color('0xF4F7F5')
 END_SCREEN_COLOUR = pygame.Color('0x584B53')
-VELOCITY = 180  # SHOULD BE MULTIPLE OF FPS
+VELOCITY = int(Game_Options.dfg[3])#180  # SHOULD BE MULTIPLE OF FPS
 FPS = 60
-WORDS_PER_SECOND = 0.5
-WORD_FILE = 'words.txt'
-MIN_WORD_LENGTH = 4
-MAX_WORD_LENGTH = 10
-MAX_WORDS = 50
-SOUND = True    # Will be set to False if issues opening audio files
+WORDS_PER_SECOND = float(Game_Options.dfg[4])#0.5
+WORD_FILE = Game_Options.dfg[5] #'words.txt'
+MIN_WORD_LENGTH = int(Game_Options.dfg[6])#4
+MAX_WORD_LENGTH = int(Game_Options.dfg[7])#5
+MAX_WORDS = int(Game_Options.dfg[8])#50
+SOUND = Game_Options.dfg[9]    # Will be set to False if issues opening audio files
 VOLUME = 0.5    # Value between 0.0 and 1.0
-
+KEYBOARD_LAYOUT = Game_Options.dfg[10] #0 for the qwert and 1 for the azerti keyboard (0 is the default)
 # Game setup
 pygame.init()
 pygame.display.set_caption('Typing Trainer')
@@ -78,7 +79,7 @@ class Word:
 def create_word_list():
     word_list = []
     try:
-        with open(WORD_FILE) as f:
+        with open('./samples/'+str(WORD_FILE)) as f:
             words = f.readlines()
             for word in words:
                 word = word.strip()
@@ -195,6 +196,7 @@ def title_screen():
     sys.exit()
 
 # Game Loop
+
 def game():
     playing = True
     cycle = 0
@@ -211,7 +213,10 @@ def game():
                 sys.exit()
             elif event.type == KEYDOWN:
                 try:
-                    mistakes += check_letter_of_word(chr(event.key), game_words)
+                    if KEYBOARD_LAYOUT == 1:
+                        mistakes += check_letter_of_word(event.unicode, game_words)
+                    else:
+                        mistakes += check_letter_of_word(chr(event.key),game_words)
                 except ValueError:
                     pass
 
