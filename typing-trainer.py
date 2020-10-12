@@ -5,8 +5,8 @@ from pygame.locals import *
 import settings 
 # Game Options
 Game_Options = settings.App()
-WIDTH = int(Game_Options.dfg[0])#800
-HEIGHT = int(Game_Options.dfg[1]) #600
+WIDTH = int(Game_Options.dfg[0])#1024
+HEIGHT = int(Game_Options.dfg[1]) #768
 FONT = 'carlito'
 FONT_SIZE = int(Game_Options.dfg[2])#72
 BG_COLOUR = pygame.Color('0x584B53')
@@ -20,7 +20,7 @@ WORD_FILE = Game_Options.dfg[5] #'words.txt'
 MIN_WORD_LENGTH = int(Game_Options.dfg[6])#4
 MAX_WORD_LENGTH = int(Game_Options.dfg[7])#5
 MAX_WORDS = int(Game_Options.dfg[8])#50
-SOUND = Game_Options.SOUND    # Will be set to False if issues opening audio files
+SOUND = Game_Options.dfg[9]    # Will be set to False if issues opening audio files
 VOLUME = 0.5    # Value between 0.0 and 1.0
 KEYBOARD_LAYOUT = Game_Options.dfg[10] #0 for the qwert and 1 for the azerti keyboard (0 is the default)
 # Game setup
@@ -79,7 +79,7 @@ class Word:
 def create_word_list():
     word_list = []
     try:
-        with open(WORD_FILE) as f:
+        with open('./samples/'+str(WORD_FILE)) as f:
             words = f.readlines()
             for word in words:
                 word = word.strip()
