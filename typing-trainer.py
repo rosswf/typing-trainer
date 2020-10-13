@@ -3,6 +3,11 @@ import sys
 import pygame
 from pygame.locals import *
 
+import Difficulty
+
+#Name. words per second, Velocity, min word_length
+GameSettings = Difficulty.GameDifficulty()
+
 # Game Options
 WIDTH = 1024
 HEIGHT = 768
@@ -12,11 +17,11 @@ BG_COLOUR = pygame.Color('0x584B53')
 FONT_COLOUR = pygame.Color('0xFFBA0A')
 SCORE_COLOUR = pygame.Color('0xF4F7F5')
 END_SCREEN_COLOUR = pygame.Color('0x584B53')
-VELOCITY = 180  # SHOULD BE MULTIPLE OF FPS
+VELOCITY = GameSettings[2] # SHOULD BE MULTIPLE OF FPS
 FPS = 60
-WORDS_PER_SECOND = 0.5
+WORDS_PER_SECOND = GameSettings[1]
 WORD_FILE = 'words.txt'
-MIN_WORD_LENGTH = 4
+MIN_WORD_LENGTH = GameSettings[3]
 MAX_WORD_LENGTH = 10
 MAX_WORDS = 50
 SOUND = True    # Will be set to False if issues opening audio files
